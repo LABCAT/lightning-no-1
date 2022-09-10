@@ -12,6 +12,12 @@ export default function Reducer(state, action) {
                 notes: [...state.notes, action.payload]
             }
         }
+         case "UPDATE_CAMERA_ZPOS": {
+            return {
+                ...state,
+                cameraZPos: state.cameraZPos + 75
+            }
+        }
         case "RESET_NOTES": {
             return {
                 ...state,

@@ -7,8 +7,8 @@ import Effects from './components/Effects'
 import String from './components/String'
 
 export default function Scene() {
-    const { audioIsPlaying, notes  } = useContext(Context),
-        camera = { fov: 75, near: 0.1, far: 1000, position: [0,1,-300] },
+    const { cameraZPos, notes  } = useContext(Context),
+        camera = { fov: 75, near: 0.1, far: 1000, position: [0,0,cameraZPos] },
         objectsArray = [],
         addToObjectsArray = (string) => {
           objectsArray.push(string);
@@ -19,14 +19,14 @@ export default function Scene() {
                 <ambientLight intensity={0.5} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
                 <pointLight position={[-10, -10, -10]} />
-                <Stars radius={50} saturation={50} fade={true} />
+                <Stars radius={75} saturation={50} fade={true} />
                  <>
                     {notes.map((note, index) => (
                         <String key={index} pos={[note.xPos, note.yPos, note.zPos]} colour={note.colour} addToObjectsArray={addToObjectsArray} />
                     ))}
                 </>
-                <Effects outlines={objectsArray} />
-                <CameraControls />
+                { cameraZPos >= -200 && <Effects outlines={objectsArray} /> }
+                <CameraControls cameraZPos={cameraZPos} />
             </Suspense>
         </Canvas>
     );

@@ -12,7 +12,7 @@ import { Context } from "./context/Context.js";
 const Audio = () => {
     let animation = null;
     const sketchRef = useRef();
-    const { updateNotes, resetNotes, updateIsAudioPlaying } = useContext(Context);
+    const { updateNotes, resetNotes, updateCameraZPos } = useContext(Context);
 
     const Sketch = p => {
 
@@ -31,7 +31,6 @@ const Audio = () => {
         p.loadMidi = () => {
             Midi.fromUrl(midi).then(
                 function(result) {
-                    console.log(result);
                     const noteSet1 = result.tracks[8].notes; // Combinator 1 - Touch Orchestra
                     p.scheduleCueSet(noteSet1, 'executeCueSet1');
                     p.audioLoaded = true;
@@ -74,22 +73,38 @@ const Audio = () => {
             }
         }
 
+        p.gridVersion = 1;
 
         p.executeCueSet1 = (note) => {
-            const { currentCue } = note;
+            const { currentCue, durationTicks } = note;
             const colours = ['blue', 'orange', 'pink', 'purple'],
-                colour  = colours[Math.floor(Math.random() * colours.length)];
+                colour  = colours[Math.floor(Math.random() * colours.length)],
+                dist = 150;
 
-            if(currentCue % 2 === 0){
+                console.log(note);
+
+            if(currentCue % 2 === 0 && currentCue < 84){
                 resetNotes();
+            }
+
+            if(currentCue < 16) {
+                updateCameraZPos();
+            }
+
+            if(durationTicks > 10000 && currentCue > 14) {
+                const root = document.documentElement,
+                    gridOptions = [1,2,3,4,5,6];
+                gridOptions.splice(p.gridVersion - 1, 1);
+                p.gridVersion = p.random(gridOptions);
+                root.style.setProperty("--canvas-bg", "var(--bg-gradient-" + p.gridVersion + ')');
             }
 
             updateNotes(
                 {
                     colour: colour,
-                    xPos: p.random(-100, 100),
-                    yPos: p.random(-100, 100),
-                    zPos: p.random(-100, 100)
+                    xPos: p.random(-dist, dist),
+                    yPos: p.random(-dist/2, dist/2),
+                    zPos: p.random(-dist, dist)
                 }
             )
         }
@@ -148,10 +163,8 @@ const Audio = () => {
     };
 
     const playHandler = () => {
-        console.log(animation);
         if(animation) {
             if(animation.audioLoaded){
-                console.log(animation.song);
                 if (animation.song.isPlaying()) {
                     animation.song.pause();
                 } else {
