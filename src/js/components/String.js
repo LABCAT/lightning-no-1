@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import { useFrame } from "@react-three/fiber";
 import { LightningStrike } from 'three/examples/jsm/geometries/LightningStrike.js';
+import { Context } from "../context/Context.js";
 
 
 export default function String(props) {
     const { pos, colour, addToObjectsArray } = props,
+        { coloursOptions } = useContext(Context),
         mesh = useRef(),
         lightning = new LightningStrike();
+        
   
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
@@ -15,8 +18,7 @@ export default function String(props) {
 
     useEffect(
         () => {
-            const colours = ['blue', 'orange', 'pink', 'purple'];
-            mesh.current.glow = colours[Math.floor(Math.random() * colours.length)];
+            mesh.current.glow = coloursOptions[Math.floor(Math.random() * coloursOptions.length)];
             addToObjectsArray(mesh.current);
         }, 
         [addToObjectsArray]

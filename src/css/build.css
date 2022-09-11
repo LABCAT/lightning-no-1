@@ -33,7 +33,7 @@ https: //non-boring-gradients.netlify.app/
       rgb(87.868% 53.725% 98.382%) 43.72%,
       rgb(85% 57.255% 97.843%) 51.31%,
       rgba(0, 0, 0, 1) 100.13%);
-  --bg-gradient-5: linear-gradient(0deg,
+  --bg-gradient-6: linear-gradient(0deg,
       #A7EDFA -8.35%,
       #9AEAF4 -5.1%,
       #8CE6EE 28.53%,
@@ -42,7 +42,7 @@ https: //non-boring-gradients.netlify.app/
       #F0C5DF 67.59%,
       #DC99BA 89.28%,
       #C86D95 100.13%);
-  --bg-gradient-6: linear-gradient(0deg,
+  --bg-gradient-5: linear-gradient(0deg,
       #E602BC -8.35%,
       #AE20C5 -5.1%,
       #753ECD 28.53%,

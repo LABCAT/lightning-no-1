@@ -7,26 +7,26 @@ import Effects from './components/Effects'
 import String from './components/String'
 
 export default function Scene() {
-    const { cameraZPos, notes  } = useContext(Context),
-        camera = { fov: 75, near: 0.1, far: 1000, position: [0,0,cameraZPos] },
+    const { notes, currentNote, canSetCameraPos, cameraZPos, cameraRotateSpeed  } = useContext(Context),
+        { currentCue } = currentNote,
         objectsArray = [],
         addToObjectsArray = (string) => {
           objectsArray.push(string);
         };
     return (
-        <Canvas camera={camera}>
+        <Canvas>
             <Suspense fallback='loading...'>
                 <ambientLight intensity={0.5} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
                 <pointLight position={[-10, -10, -10]} />
                 <Stars radius={75} saturation={50} fade={true} />
-                 <>
+                <>
                     {notes.map((note, index) => (
                         <String key={index} pos={[note.xPos, note.yPos, note.zPos]} colour={note.colour} addToObjectsArray={addToObjectsArray} />
                     ))}
                 </>
-                { cameraZPos >= -200 && <Effects outlines={objectsArray} /> }
-                <CameraControls cameraZPos={cameraZPos} />
+                <Effects outlines={objectsArray} />
+                <CameraControls canSetCameraPos={canSetCameraPos} cameraZPos={cameraZPos} cameraRotateSpeed={cameraRotateSpeed} />
             </Suspense>
         </Canvas>
     );

@@ -12,7 +12,7 @@ import { Context } from "./context/Context.js";
 const Audio = () => {
     let animation = null;
     const sketchRef = useRef();
-    const { updateNotes, resetNotes, updateCameraZPos } = useContext(Context);
+    const { coloursOptions, updateNotes, resetNotes, updateCurrentNote, updateCameraZPos, updateCameraRotateSpeed } = useContext(Context);
 
     const Sketch = p => {
 
@@ -76,37 +76,38 @@ const Audio = () => {
         p.gridVersion = 1;
 
         p.executeCueSet1 = (note) => {
-            const { currentCue, durationTicks } = note;
-            const colours = ['blue', 'orange', 'pink', 'purple'],
+            const { currentCue, ticks } = note;
+            const colours =coloursOptions,
                 colour  = colours[Math.floor(Math.random() * colours.length)],
-                dist = 150;
-
-                console.log(note);
+                dist = currentCue > 15 ? 150 : currentCue;
+            
+            updateCurrentNote(note);
+            updateCameraZPos(note);
 
             if(currentCue % 2 === 0 && currentCue < 84){
                 resetNotes();
             }
 
-            if(currentCue < 16) {
-                updateCameraZPos();
-            }
-
-            if(durationTicks > 10000 && currentCue > 14) {
+            if((currentCue % 14 === 1 || ticks % 61440 === 0) && currentCue > 14) {
                 const root = document.documentElement,
-                    gridOptions = [1,2,3,4,5,6];
+                    gridOptions = [1,2,3,4,5];
                 gridOptions.splice(p.gridVersion - 1, 1);
                 p.gridVersion = p.random(gridOptions);
                 root.style.setProperty("--canvas-bg", "var(--bg-gradient-" + p.gridVersion + ')');
+            }
+
+            if(currentCue % 14 === 1 && currentCue > 15) {
+                updateCameraRotateSpeed();
             }
 
             updateNotes(
                 {
                     colour: colour,
                     xPos: p.random(-dist, dist),
-                    yPos: p.random(-dist/2, dist/2),
-                    zPos: p.random(-dist, dist)
+                    yPos: p.random(-dist/2 - 50, dist/2 - 50),
+                    zPos: p.random(-50, dist)
                 }
-            )
+            );
         }
 
         p.mousePressed = () => {
