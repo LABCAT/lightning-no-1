@@ -10,7 +10,7 @@ import midi from "../audio/lightning-no-1.mid";
 import { Context } from "./context/Context.js";
 
 const Audio = () => {
-    let animation = null;
+    const animation = useRef();
     const sketchRef = useRef();
     const { coloursOptions, updateNotes, resetNotes, updateCurrentNote, updateCameraZPos, updateCameraRotateSpeed } = useContext(Context);
 
@@ -84,7 +84,7 @@ const Audio = () => {
             updateCurrentNote(note);
             updateCameraZPos(note);
 
-            if(currentCue % 2 === 0 && currentCue < 84){
+            if(currentCue % 4 === 0 && currentCue < 84){
                 resetNotes();
             }
 
@@ -164,24 +164,25 @@ const Audio = () => {
     };
 
     const playHandler = () => {
-        if(animation) {
-            if(animation.audioLoaded){
-                if (animation.song.isPlaying()) {
-                    animation.song.pause();
+        if(animation.current) {
+            
+            if(animation.current.audioLoaded){
+                if (animation.current.song.isPlaying()) {
+                    animation.current.song.pause();
                 } else {
-                    if (parseInt(animation.song.currentTime()) >= parseInt(animation.song.buffer.duration)) {
-                        animation.reset();
+                    if (parseInt(animation.current.song.currentTime()) >= parseInt(animation.current.song.buffer.duration)) {
+                        animation.current.reset();
                     }
                     // document.getElementById("play-icon").classList.add("fade-out");
-                    animation.canvas.addClass("fade-in");
-                    animation.song.play();
+                    animation.current.canvas.addClass("fade-in");
+                    animation.current.song.play();
                 }
             }
         }
     }
 
     useEffect(() => {
-        animation = new p5(Sketch, sketchRef.current);
+        animation.current = new p5(Sketch, sketchRef.current);
     }, []);
 
 

@@ -44,6 +44,10 @@ export const GlobalContextProvider = ({ children }) => {
         dispatch({ type: "UPDATE_CURRENT_NOTE", payload: newNote });
     }
 
+    const updateCanSetCameraPos = () => {
+        dispatch({ type: "UPDATE_CAN_SET_CAMERA_POS" });
+    }
+
     const updateCameraZPos = (newCue) => {
         dispatch({ type: "UPDATE_CAMERA_ZPOS", payload: newCue  });
     }
@@ -64,6 +68,7 @@ export const GlobalContextProvider = ({ children }) => {
                 currentNote: state.currentNote,
                 updateCurrentNote,
                 canSetCameraPos: state.canSetCameraPos,
+                updateCanSetCameraPos,
                 cameraZPos: state.cameraZPos,
                 updateCameraZPos,
                 cameraRotateSpeed: state.cameraRotateSpeed,

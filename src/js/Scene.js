@@ -7,7 +7,7 @@ import Effects from './components/Effects'
 import String from './components/String'
 
 export default function Scene() {
-    const { notes, currentNote, canSetCameraPos, cameraZPos, cameraRotateSpeed  } = useContext(Context),
+    const { notes, currentNote, canSetCameraPos, updateCanSetCameraPos, cameraZPos, cameraRotateSpeed  } = useContext(Context),
         { currentCue } = currentNote,
         objectsArray = [],
         addToObjectsArray = (string) => {
@@ -26,7 +26,7 @@ export default function Scene() {
                     ))}
                 </>
                 <Effects outlines={objectsArray} />
-                <CameraControls canSetCameraPos={canSetCameraPos} cameraZPos={cameraZPos} cameraRotateSpeed={cameraRotateSpeed} />
+                <CameraControls canSetCameraPos={canSetCameraPos} updateCanSetCameraPos={updateCanSetCameraPos} cameraZPos={cameraZPos} cameraRotateSpeed={cameraRotateSpeed} />
             </Suspense>
         </Canvas>
     );

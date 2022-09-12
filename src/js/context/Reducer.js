@@ -28,12 +28,18 @@ export default function Reducer(state, action) {
                 notes: [...state.notes, action.payload]
             }
         }
+        case "UPDATE_CAN_SET_CAMERA_POS": {
+            return {
+                ...state,
+                canSetCameraPos: false
+            }
+        }
         case "UPDATE_CAMERA_ZPOS": {
             const note = action.payload,
-             { currentCue, durationTicks } = note;  
+             { currentCue } = note;  
             let zPos = state.cameraZPos;
             if(currentCue > 14) {
-                if(currentCue % 14 === 0 && currentCue > 14 && currentCue < 84) {
+                if(currentCue % 14 === 1 && currentCue > 28 && currentCue < 84) {
                     return {
                         ...state,
                         canSetCameraPos: true,
@@ -50,6 +56,7 @@ export default function Reducer(state, action) {
             }
             return {
                 ...state,
+                canSetCameraPos: true,
                 cameraZPos: zPos
             }
         }

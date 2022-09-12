@@ -3,7 +3,7 @@ import { extend, useThree, useFrame  } from "@react-three/fiber";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export default function CameraControls(props) {
-  const { canSetCameraPos, cameraZPos, cameraRotateSpeed } = props;
+  const { canSetCameraPos, updateCanSetCameraPos, cameraZPos, cameraRotateSpeed } = props;
 
   // Get a reference to the Three.js Camera, and the canvas html element.
   // We need these to setup the OrbitControls class.
@@ -18,6 +18,7 @@ export default function CameraControls(props) {
   useFrame(() => {
     if(canSetCameraPos) {
       camera.position.set( 0, 0, cameraZPos );
+      updateCanSetCameraPos();
     }
     controls.current.autoRotate = true;
     controls.current.autoRotateSpeed = cameraRotateSpeed;
@@ -27,8 +28,6 @@ export default function CameraControls(props) {
     <orbitControls
       ref={controls}
       args={[camera, domElement]}
-      autoRotate={true}
-
       enableZoom={true}
     />
   );
