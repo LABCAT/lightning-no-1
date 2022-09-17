@@ -34,7 +34,7 @@ const Audio = () => {
                     const noteSet1 = result.tracks[8].notes; // Combinator 1 - Touch Orchestra
                     p.scheduleCueSet(noteSet1, 'executeCueSet1');
                     p.audioLoaded = true;
-                    // document.getElementById("loader").classList.add("loading--complete");
+                    document.getElementById("loader").classList.add("loading--complete");
                     document.getElementById("play-icon").classList.remove("fade-out");
                 }
             );
@@ -84,7 +84,13 @@ const Audio = () => {
             updateCurrentNote(note);
             updateCameraZPos(note);
 
-            if(currentCue % 4 === 0 && currentCue < 84){
+            if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1 && currentCue % 2 === 0 && currentCue < 84){
+                resetNotes();
+            }
+            else if (currentCue % 14 < 6 && currentCue < 84 && currentCue % 2 === 0){
+                resetNotes();
+            }
+            else if ([6, 10, 1].includes(currentCue % 14)){
                 resetNotes();
             }
 
@@ -164,16 +170,18 @@ const Audio = () => {
     };
 
     const playHandler = () => {
+        console.log(animation.current);
         if(animation.current) {
             
             if(animation.current.audioLoaded){
                 if (animation.current.song.isPlaying()) {
                     animation.current.song.pause();
+                    document.getElementById("play-icon").classList.remove("play-icon--playing");
                 } else {
                     if (parseInt(animation.current.song.currentTime()) >= parseInt(animation.current.song.buffer.duration)) {
                         animation.current.reset();
                     }
-                    // document.getElementById("play-icon").classList.add("fade-out");
+                    document.getElementById("play-icon").classList.add("play-icon--playing");
                     animation.current.canvas.addClass("fade-in");
                     animation.current.song.play();
                 }

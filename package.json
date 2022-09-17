@@ -1,7 +1,7 @@
 {
-  "name": "react-three-js-starter-kit",
-  "homepage": "/",
-  "version": "0.1.0",
+  "name": "lightning-no-1",
+  "version": "1.0.0",
+  "homepage": "https://lightning-no-1.labcat.nz",
   "private": true,
   "dependencies": {
     "@react-three/drei": "^7.4.0",
@@ -17,7 +17,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -36,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
